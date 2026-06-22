@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Painel — Cinema{% endblock %}
+
+{% block content %}
+<h1>Cinema Tech</h1>
+<p class="subtitulo">Cenário B — Filmes, Salas e Sessões</p>
+
+<div class="cards">
+    <div class="card">
+        <span class="card-num">{{ total_filmes }}</span>
+        <span class="card-label">Filmes</span>
+    </div>
+    <div class="card">
+        <span class="card-num">{{ total_salas }}</span>
+        <span class="card-label">Salas</span>
+    </div>
+    <div class="card">
+        <span class="card-num">{{ total_sessoes }}</span>
+        <span class="card-label">Sessões</span>
+    </div>
+</div>
+
+<p><a class="btn" href="{{ url_for('cinema.index') }}">Ver programação</a></p>
+{% endblock %}
