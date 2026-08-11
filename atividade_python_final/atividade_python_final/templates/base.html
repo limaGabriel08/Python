@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Agenda{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='estilo.css') }}" rel="stylesheet">
+</head>
+<body>
+
+<header class="topo">
+    <div class="container d-flex align-items-center justify-content-between py-3">
+        <a class="marca" href="{{ url_for('abertura') }}">
+            <span class="marca-ponto"></span>Agenda
+        </a>
+        {% if session.conta_id %}
+        <nav class="d-flex align-items-center gap-3">
+            <a class="atalho" href="{{ url_for('dashboard') }}">
+                <i class="bi bi-grid-1x2"></i> <span class="rotulo-atalho">Painel</span>
+            </a>
+            <a class="atalho" href="{{ url_for('nova_tarefa') }}">
+                <i class="bi bi-plus-lg"></i> <span class="rotulo-atalho">Adicionar</span>
+            </a>
+            <span class="divisor"></span>
+            <span class="apelido">{{ session.apelido }}</span>
+            <a class="atalho atalho-saida" href="{{ url_for('logout') }}" title="Sair">
+                <i class="bi bi-power"></i>
+            </a>
+        </nav>
+        {% endif %}
+    </div>
+</header>
+
+<main class="container py-4">
+    {% with avisos = get_flashed_messages(with_categories=true) %}
+        {% for tipo, texto in avisos %}
+        <div class="aviso aviso-{{ tipo }}">
+            <i class="bi bi-{% if tipo == 'danger' %}exclamation-octagon{% elif tipo == 'warning' %}info-circle{% else %}check2-circle{% endif %}"></i>
+            <span>{{ texto }}</span>
+        </div>
+        {% endfor %}
+    {% endwith %}
+
+    {% block conteudo %}{% endblock %}
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

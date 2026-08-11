@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block titulo %}Painel · Agenda{% endblock %}
+
+{% block conteudo %}
+
+<div class="citacao">
+    <i class="bi bi-quote"></i>{{ frase }}
+</div>
+
+<div class="painel-topo">
+    <div>
+        <h1>Suas tarefas</h1>
+        <p class="contador">
+            {% if lista %}{{ lista|length }} no total{% else %}nada por aqui ainda{% endif %}
+        </p>
+    </div>
+    <a href="{{ url_for('nova_tarefa') }}" class="botao">
+        <i class="bi bi-plus-lg"></i> Nova tarefa
+    </a>
+</div>
+
+{% if not lista %}
+    <div class="vazio">
+        <i class="bi bi-inbox"></i>
+        Sua lista está vazia. Que tal adicionar a primeira tarefa?
+    </div>
+{% else %}
+    {% for tarefa in lista %}
+    <article class="linha linha-{{ cores[tarefa.status] }}">
+        <div class="linha-texto">
+            <div class="linha-assunto">{{ tarefa.titulo }}</div>
+            {% if tarefa.descricao %}
+            <p class="linha-detalhe">{{ tarefa.descricao }}</p>
+            {% endif %}
+        </div>
+
+        <span class="selo selo-{{ cores[tarefa.status] }}">{{ rotulos[tarefa.status] }}</span>
+
+        <div class="acoes">
+            {% if tarefa.status != 'concluida' %}
+            <form method="POST" action="{{ url_for('concluir', codigo=tarefa.id) }}">
+                <button type="submit" class="acao acao-ok" title="Marcar como concluída">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+            </form>
+            {% endif %}
+
+            <a href="{{ url_for('editar', codigo=tarefa.id) }}" class="acao" title="Editar">
+                <i class="bi bi-pencil"></i>
+            </a>
+
+            <form method="POST" action="{{ url_for('excluir', codigo=tarefa.id) }}"
+                  onsubmit="return confirm('Remover esta tarefa?')">
+                <button type="submit" class="acao acao-apagar" title="Remover">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </form>
+        </div>
+    </article>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

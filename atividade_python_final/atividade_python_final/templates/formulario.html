@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ 'Editar' if tarefa else 'Nova' }} tarefa · Agenda{% endblock %}
+
+{% block conteudo %}
+<div class="estreito estreito-largo">
+    <div class="cartao">
+        <h1>
+            <i class="bi bi-{{ 'pencil' if tarefa else 'plus-circle' }}"></i>
+            {{ 'Editar tarefa' if tarefa else 'Nova tarefa' }}
+        </h1>
+
+        <form method="POST">
+            <div class="campo">
+                <label for="assunto">Título</label>
+                <input type="text" id="assunto" name="assunto"
+                       value="{{ tarefa.titulo if tarefa else '' }}" required autofocus>
+            </div>
+
+            <div class="campo">
+                <label for="detalhe">Descrição <span class="dica">opcional</span></label>
+                <textarea id="detalhe" name="detalhe" rows="4">{{ tarefa.descricao if tarefa else '' }}</textarea>
+            </div>
+
+            <div class="campo">
+                <label for="situacao">Situação</label>
+                <select id="situacao" name="situacao">
+                    {% for chave, texto in rotulos.items() %}
+                    <option value="{{ chave }}"
+                        {% if tarefa and tarefa.status == chave %}selected{% endif %}>{{ texto }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="rodape-form">
+                <button type="submit" class="botao">
+                    {{ 'Salvar alterações' if tarefa else 'Adicionar' }}
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="botao botao-vazado">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
